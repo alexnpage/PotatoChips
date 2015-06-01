@@ -3,47 +3,93 @@
 //
 
 #include "Game.h"
+#include "MenuState.h"
+#include "LevelState.h"
 
 Game::Game(sf::String title)
-: app(sf::VideoMode(640, 480), title)
 {
-    currState = new Menu(&app);
+    window.create(sf::VideoMode(640, 480), title);
+    window.setFramerateLimit(60);
+
+    pushState(new MenuState(this));
+
+    font = sf::Font();
+    if (!font.loadFromFile("data/Munro.ttf")) {
+        window.close();
+    }
 }
 
 Game::~Game()
 {
-    delete currState;
+    while(!states.empty()) popState();
+}
+
+void Game::pushState(State *state)
+{
+    states.push(state);
+
+    return;
+}
+
+void Game::popState()
+{
+    delete states.top();
+    states.pop();
+
+    return;
+}
+
+void Game::changeState(State *state)
+{
+    if(!states.empty())
+        popState();
+    pushState(state);
+
+    return;
+}
+
+State *Game::peekState()
+{
+    if(states.empty()) return nullptr;
+    return states.top();
 }
 
 int Game::mainLoop()
 {
-    while (app.isOpen())
+    sf::Clock clock;
+
+    while (window.isOpen())
     {
+        sf::Time elapsed = clock.restart();
+        float dt = elapsed.asSeconds();
+
         sf::Event event;
-        while (app.pollEvent(event))
+        while (window.pollEvent(event))
         {
-            currState->handleEvent(event);
             if (event.type == sf::Event::Closed)
             {
-                app.close();
+                window.close();
             }
+            if (peekState() != nullptr)
+                peekState()->handleEvent(&event);
         }
 
-        update();
-        draw();
+        if(peekState() == nullptr) continue;
+        update(dt);
+        draw(dt);
     }
 
     return EXIT_SUCCESS;
 }
 
-void Game::update()
+void Game::update(float dt)
 {
-    currState->update();
+    peekState()->update(dt);
 }
 
-void Game::draw()
+void Game::draw(float dt)
 {
-    app.clear();
-    currState->draw();
-    app.display();
+    window.clear();
+    peekState()->draw(dt);
+    window.display();
 }

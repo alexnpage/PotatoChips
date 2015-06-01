@@ -2,23 +2,31 @@
 // Created by Valter on 5/29/2015.
 //
 
-#ifndef POTATOCHIPS_MENU_H
-#define POTATOCHIPS_MENU_H
+#ifndef POTATOCHIPS_MENUSTATE_H
+#define POTATOCHIPS_MENUSTATE_H
+
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 
 #include "State.h"
 
-class Menu: public State {
-public:
-    Menu(sf::RenderWindow * app);
-    void handleEvent(sf::Event event);
-    void update();
-    void draw();
-private:
-    sf::Font font;
-    sf::Text text;
+class MenuState: public State
+{
+    public:
+
+        MenuState(Game *game);
+        virtual void handleEvent(sf::Event *event);
+        virtual void update(const float dt);
+        virtual void draw(const float dt);
+
+    protected:
+
+    private:
+
+        sf::View view;
+        sf::Text title;
 };
 
 
-#endif //POTATOCHIPS_MENU_H
+#endif //POTATOCHIPS_MENUSTATE_H

@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -shared-libgcc -shared-libstd
 
 # Define sources and executable
 set(SOURCE_FILES main.cpp)
-add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES} Game.cpp Game.h State.h MenuState.cpp MenuState.h)
+add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES} Game.cpp Game.h State.h MenuState.cpp MenuState.h LevelState.cpp LevelState.h)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs)
 
@@ -27,8 +27,8 @@ add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
         "${PROJECT_SOURCE_DIR}/libs"
         ${CMAKE_BINARY_DIR})
 
-# Copy the game's resources to the /res folder
+# Copy the game's resources to the /data folder
 add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${PROJECT_SOURCE_DIR}/res"
-        ${CMAKE_BINARY_DIR}/res)
+        "${PROJECT_SOURCE_DIR}/data"
+        ${CMAKE_BINARY_DIR}/data)

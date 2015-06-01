@@ -6,23 +6,33 @@
 #define POTATOCHIPS_GAME_H
 
 #include <string>
+#include <stack>
 #include <SFML/Graphics.hpp>
-#include "State.h"
-#include "MenuState.h"
 
-class Game {
+class State;
 
-public:
-    Game(sf::String title);
-    ~Game();
-    int mainLoop();
+class Game
+{
+    public:
+        sf::RenderWindow window;
 
-private:
-    void update();
-    void draw();
+        sf::Font font;
 
-    State * currState;
-    sf::RenderWindow app;
+        void pushState(State *state);
+        void popState();
+        void changeState(State *state);
+        State *peekState();
+
+        int mainLoop();
+
+        Game(sf::String title);
+        ~Game();
+
+    private:
+        std::stack<State*> states;
+
+        void update(float dt);
+        void draw(float dt);
 };
 
 
