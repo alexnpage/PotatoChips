@@ -3,7 +3,7 @@ project(PotatoChips)
 
 set(EXECUTABLE_NAME "PotatoChips")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -shared-libgcc -shared-libstdc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Define sources and executable
 set(SOURCE_FILES main.cpp)
