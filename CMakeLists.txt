@@ -6,8 +6,8 @@ set(EXECUTABLE_NAME "PotatoChips")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Define sources and executable
-set(SOURCE_FILES main.cpp)
-add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES} Game.cpp Game.h State.h MenuState.cpp MenuState.h LevelState.cpp LevelState.h)
+set(SOURCE_FILES main.cpp Game.cpp Game.h State.h MenuState.cpp MenuState.h LevelState.cpp LevelState.h)
+add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs)
 
@@ -22,10 +22,12 @@ if(SFML_FOUND)
 endif()
 
 # Copy the SFML libraries to the executable's folder
-add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${PROJECT_SOURCE_DIR}/libs"
-        ${CMAKE_BINARY_DIR})
+if(WIN32)
+    add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${PROJECT_SOURCE_DIR}/libs"
+            ${CMAKE_BINARY_DIR})
+endif()
 
 # Copy the game's resources to the /data folder
 add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
